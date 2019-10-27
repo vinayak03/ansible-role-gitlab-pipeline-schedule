@@ -1,9 +1,19 @@
 ---
 # tasks file for gitlab-pipeline-schedules
+- name: check var definition
+  fail:
+    msg: "{{item}} not defined in vars"
+  when: item is not defined
+  with_items: ["gitlab_token","gitlab_host","cron_schedule"]
+
+- name: check if at least one project is defined
+  fail:
+    msg: "at least one project is required to run the role"
+  when: projects is not defined or (projects | length) == 0
+
 - name: update the pipeline schedule for given projects.
   command:
     "curl --request PUT --header \"PRIVATE-TOKEN: {{gitlab_token}}\" --form cron=\"{{cron_schedule}}\" \"https://{{gitlab_host}}/api/v4/projects/{{item.project_id}}/pipeline_schedules/{{item.schedule_id}}\""
   args:
     warn: no
-
   with_items: "{{ projects }}"
