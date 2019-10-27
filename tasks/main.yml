@@ -1,0 +1,9 @@
+---
+# tasks file for gitlab-pipeline-schedules
+- name: update the pipeline schedule for given projects.
+  command:
+    "curl --request PUT --header \"PRIVATE-TOKEN: {{gitlab_token}}\" --form cron=\"{{cron_schedule}}\" \"https://{{gitlab_host}}/api/v4/projects/{{item.project_id}}/pipeline_schedules/{{item.schedule_id}}\""
+  args:
+    warn: no
+
+  with_items: "{{ projects }}"
