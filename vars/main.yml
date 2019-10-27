@@ -1,0 +1,10 @@
+---
+# vars file for gitlab-pipeline-schedules
+gitlab_token: ""
+gitlab_host: ""
+cron_schedule: "0 2 15 * *"
+projects:
+  - project_id: 1
+    schedule_id: 11
+  - project_id: 2
+    schedule_id: 21
